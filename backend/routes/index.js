@@ -21,4 +21,18 @@ router.get("/user", authenticateToken, function (req, res, next) {
 router.post("/user/login", user_controller.login);
 router.post("/user/signup", user_controller.signup);
 
+router.get("/posts", post_controller.get_posts);
+router.post("/post/create", authenticateToken, post_controller.create_post);
+router.get("/post/:post_id", post_controller.read_post);
+router.put(
+  "/post/:post_id/update",
+  authenticateToken,
+  post_controller.update_post
+);
+router.delete(
+  "/post/:post_id/delete",
+  authenticateToken,
+  post_controller.delete_post
+);
+
 module.exports = router;

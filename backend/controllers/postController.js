@@ -1,92 +1,98 @@
 const { body, validationResult } = require("express-validator");
+const asyncHandler = require("express-async-handler");
 
 const Post = require("../models/post");
 
-exports.get_posts = (req, res, next) => {
-  Post.find()
+exports.get_posts = asyncHandler(async (req, res, next) => {
+  const allPosts = await Post.find()
     .populate("author")
-    .sort("-createdAt")
-    .exec((err, posts) => {
-      if (err) return res.json(err);
-      res.json(posts);
-    });
-};
+    .sort({ timestamp: -1 })
+    .exec();
 
-exports.publish_post = (req, res, next) => {
-  Post.findOneAndUpdate(
-    { _id: req.params.post_id },
-    { published: true },
-    { useFindAndModify: false, new: true }
-  )
-    .populate("author")
-    .exec((err, post) => {
-      if (err) return res.status(400).json(err);
-      res.json(post);
-    });
-};
-
-exports.unpublish_post = (req, res, next) => {
-  Post.findOneAndUpdate(
-    { _id: req.params.post_id },
-    { published: false },
-    { useFindAndModify: false, new: true }
-  )
-    .populate("author")
-    .exec((err, post) => {
-      if (err) return res.status(400).json(err);
-      res.json(post);
-    });
-};
+  res.json(allPosts);
+});
 
 exports.create_post = [
-  body("title").trim().isLength({ min: 1 }).escape(),
-  body("content").trim().isLength({ min: 1 }).escape(),
-  unescape("&#x27;", "'"),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.json(errors.array());
-
-    const { title, content, published } = req.body;
-    Post.create(
-      { title, content, author: req.user._id, published },
-      (err, post) => {
-        if (err) return res.json(err);
-        post.populate("author", (err, populatedPost) => {
-          res.json(populatedPost);
-        });
-      }
-    );
-  },
-];
-
-exports.edit_post = [
-  body("title").trim().isLength({ min: 1 }).escape(),
-  body("content").trim().isLength({ min: 1 }).escape(),
-  //unescape('&#x27;',"'"),
-  (req, res, next) => {
+  body("title")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Title field is required"),
+  body("content", "Content field is required")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  asyncHandler(async (req, res, next) => {
     const errors = validationResult(req);
 
-    if (!errors.isEmpty()) return res.json(errors.array());
+    const post = new Post({
+      title: req.body.title,
+      content: req.body.content,
+      author: req.user._id,
+    });
 
-    const { title, content } = req.body;
-    Post.findOneAndUpdate(
-      { _id: req.params.post_id },
-      { title, content },
-      { useFindAndModify: false, new: true },
-      (err, updatedPost) => {
-        if (err) return res.status(400).json(err);
-        updatedPost.populate("author", (err, populatedPost) => {
-          if (err) return res.status(400).json(err);
-          res.json(populatedPost);
-        });
-      }
-    );
-  },
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: errors.array()[0],
+      });
+    } else {
+      await post.save();
+      return res.json({
+        message: "Post created",
+      });
+    }
+  }),
 ];
 
-exports.delete_post = (req, res, next) => {
-  Post.findOneAndDelete({ _id: req.params.post_id }, (err, deletedPost) => {
-    if (err) return res.json(err);
-    res.json(deletedPost);
-  });
-};
+exports.read_post = asyncHandler(async (req, res, next) => {
+  const post = await Post.findById(req.params.post_id)
+    .populate("author")
+    .exec();
+
+  if (post === null) {
+    // No results.
+    const err = new Error("Post not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.json(post);
+});
+
+exports.update_post = [
+  body("title")
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage("Title field is required"),
+  body("content", "Content field is required")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+
+    const post = new Post({
+      _id: req.params.post_id,
+      title: req.body.title,
+      content: req.body.content,
+      author: req.user._id,
+    });
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: errors.array()[0],
+      });
+    } else {
+      await Post.findByIdAndUpdate(req.params.post_id, post, {});
+      return res.json({
+        message: "Post updated",
+      });
+    }
+  }),
+];
+
+exports.delete_post = asyncHandler(async (req, res, next) => {
+  await Post.findByIdAndRemove(req.params.post_id);
+  return res.json({ message: "Succesfully deleted" });
+});
