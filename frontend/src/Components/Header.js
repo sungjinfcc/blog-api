@@ -10,6 +10,7 @@ function Header() {
     logout();
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    window.location.href = "/home";
   };
   return (
     <div className="header">
@@ -17,13 +18,20 @@ function Header() {
         <p className="title">Blog</p>
       </Link>
       {isAuthenticated ? (
-        <div>
+        <div className="olduser">
+          <Link to="/post/create">
+            <button>Create Post</button>
+          </Link>
           <button onClick={signout}>LogOut</button>
         </div>
       ) : (
         <div className="newuser">
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Signup</Link>
+          <Link to="/login">
+            <button>Login</button>
+          </Link>
+          <Link to="/signup">
+            <button>Signup</button>
+          </Link>
         </div>
       )}
     </div>

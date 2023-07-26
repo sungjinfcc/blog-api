@@ -47,8 +47,7 @@ function PostCreate() {
     }
   };
   return (
-    <div>
-      <h2>Create Post</h2>
+    <div className="post-form">
       <form>
         <label htmlFor="title">Title</label>
         <input
@@ -66,6 +65,7 @@ function PostCreate() {
           id="content"
           rows="10"
           value={content}
+          placeholder="Content"
           onChange={(e) => setContent(e.target.value)}
         ></textarea>
         {formErrors.content && (

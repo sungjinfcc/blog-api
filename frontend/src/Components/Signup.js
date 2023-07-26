@@ -59,17 +59,14 @@ const Signup = () => {
       localStorage.setItem("user", data.user);
 
       // Redirect to the authenticated home page
-      alert(`${response.status} data: ${data.message}`);
       window.location.href = "/home";
     } catch (error) {
-      console.error("Signup error:", error);
       setError("An unexpected error occurred. Please try again later.");
     }
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
+    <div className="signup">
       <form>
         <label htmlFor="username">Username</label>
         <input

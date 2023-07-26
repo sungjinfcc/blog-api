@@ -36,13 +36,13 @@ function Home() {
   }, []);
 
   return (
-    <div>
-      {user ? <p>Welcome back!</p> : null}
-      <Link to="/post/create">Create Post</Link>
-      {posts.map((post) => {
-        return <Postcard post={post} key={post._id} />;
-      })}
-      {error && <p>{error}</p>}
+    <div className="home">
+      {error && <p className="error-message">{error}</p>}
+      <div className="posts">
+        {posts.map((post) => {
+          return <Postcard post={post} key={post._id} />;
+        })}
+      </div>
     </div>
   );
 }

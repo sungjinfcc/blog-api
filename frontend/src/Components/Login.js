@@ -62,8 +62,7 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="login">
       <form>
         <label htmlFor="username">Username</label>
         <input

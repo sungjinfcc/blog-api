@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../authContext";
 
-function Commentcard({ postId, comment, getComments }) {
-  const { token } = useAuth();
+function Commentcard({ author, postId, comment, getComments }) {
+  const { user, token } = useAuth();
   const [onEdit, setOnEdit] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
@@ -66,7 +66,7 @@ function Commentcard({ postId, comment, getComments }) {
         }
       );
       if (!response.ok) {
-        setError("Only authorized users can delete this comment.");
+        setError("Only authorized authors can delete this comment.");
         return;
       }
       getComments();
@@ -80,13 +80,14 @@ function Commentcard({ postId, comment, getComments }) {
   }, []);
 
   return (
-    <div>
+    <div className="comment-card">
       {onEdit ? (
         <form>
-          <input
+          <textarea
             id="message"
             type="text"
             value={message}
+            rows="5"
             placeholder="Message"
             onChange={(e) => setMessage(e.target.value)}
           />
@@ -96,11 +97,20 @@ function Commentcard({ postId, comment, getComments }) {
           <button onClick={handleSubmit}>Submit</button>
         </form>
       ) : (
-        <>
-          <p>{comment.message}</p>
-          <button onClick={handleEdit}>Edit</button>
-          <button onClick={handleDelete}>Delete</button>
-        </>
+        <div className="content">
+          <p className="message">{comment.message}</p>
+          <p className="name">{author}</p>
+          {user === author ? (
+            <div className="buttons">
+              <button onClick={handleEdit} className="edit">
+                Edit
+              </button>
+              <button onClick={handleDelete} className="delete">
+                Delete
+              </button>
+            </div>
+          ) : null}
+        </div>
       )}
       {error && <p className="error-message">{error}</p>}
     </div>

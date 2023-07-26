@@ -8,6 +8,7 @@ import Login from "./Components/Login";
 import PostDetail from "./Components/PostDetail";
 import PostCreate from "./Components/PostCreate";
 import PostUpdate from "./Components/PostUpdate";
+import Footer from "./Components/Footer";
 import { useAuth } from "./authContext";
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path="/post/create" element={<PostCreate />} />
         <Route path="/post/:postId/update" element={<PostUpdate />} />
       </Routes>
+      <Footer />
     </HashRouter>
   );
 }

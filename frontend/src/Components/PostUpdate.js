@@ -78,8 +78,7 @@ function PostUpdate() {
   }, []);
 
   return (
-    <div>
-      <h2>Update Post</h2>
+    <div className="post-form">
       <form>
         <label htmlFor="title">Title</label>
         <input

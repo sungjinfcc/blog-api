@@ -1,5 +1,5 @@
 :root {
-  --gray: ##a0a0a0;
+  --gray: #f1f1f1;
 }
 *,
 *::after,
@@ -14,12 +14,18 @@ button {
   padding: 1rem 2rem;
   font-size: 1rem;
   cursor: pointer;
+  font-weight: 700;
+}
+.edit,
+.delete {
+  background-color: black;
+  color: white;
 }
 input,
 textarea {
   border: none;
   padding: 1rem 2rem;
-  background-color: #e2e2e2;
+  background-color: var(--gray);
   font-size: 1rem;
 }
 a,
@@ -30,17 +36,210 @@ a:visited {
 form {
   display: flex;
   flex-direction: column;
+  margin-top: 3rem;
+  width: 70%;
+  max-width: 1000px;
+}
+form label {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+form input,
+form textarea {
+  margin-top: 1rem;
 }
 .error-message {
   color: red;
+  margin-top: 1rem;
+}
+form button {
+  margin-top: 1rem;
 }
 /* Header */
 .header {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  padding: 2rem;
+  width: 100%;
 }
-.header .newuser {
+.header .title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+.header .newuser,
+.header .olduser {
   display: flex;
   gap: 1rem;
+}
+/* Home */
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 80vh;
+  flex-grow: 1;
+}
+.home .posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  width: 70%;
+  max-width: 1000px;
+  padding: 2rem;
+  gap: 3rem;
+  place-items: center;
+}
+.home .postcard {
+  background-color: var(--gray);
+  padding: 2rem;
+  width: 100%;
+}
+.home .postcard h1 {
+  text-align: center;
+}
+.home .postcard .content {
+  max-height: 2.4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  margin-top: 3rem;
+}
+.home .postcard h2 {
+  text-align: end;
+  font-style: italic;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 3rem;
+}
+.home .postcard .timestamp {
+  text-align: end;
+  margin-top: 1rem;
+}
+/* post */
+.post {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 80vh;
+  flex-grow: 1;
+}
+.post .post-detail {
+  width: 70%;
+  max-width: 1000px;
+  margin-top: 3rem;
+  background-color: var(--gray);
+  padding: 3rem;
+}
+.post .post-detail .content {
+  margin-top: 2rem;
+  line-height: 2rem;
+}
+.post .post-detail .author {
+  margin-top: 1rem;
+  text-align: end;
+  font-style: italic;
+}
+.post .post-detail .timestamp {
+  margin-top: 1rem;
+  text-align: end;
+  font-style: italic;
+}
+.post .post-detail .buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: end;
+  margin-top: 1rem;
+}
+.post .comments {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  width: 70%;
+  max-width: 1000px;
+}
+.post .comment-card {
+  margin-top: 1rem;
+  background-color: var(--gray);
+  padding: 3rem;
+}
+.comment-card .message {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.comment-card .name {
+  font-style: italic;
+  text-align: end;
+  margin-top: 1rem;
+}
+.comment-card .buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.comment-card form {
+  width: 100%;
+  margin-top: -1rem;
+}
+.comment-card form textarea {
+  background-color: white;
+}
+.comment-card form button {
+  background-color: black;
+  color: white;
+}
+/* Login */
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  flex-grow: 1;
+}
+.login form label {
+  margin-top: 1rem;
+}
+/* Signup */
+.signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  flex-grow: 1;
+}
+.signup form label {
+  margin-top: 1rem;
+}
+/* Post form */
+.post-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  flex-grow: 1;
+}
+.post-form form label {
+  margin-top: 1rem;
+}
+/* Footer */
+.footer {
+  display: flex;
+  font-size: 1.2rem;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gray);
+  padding: 1rem;
+  margin-top: 1rem;
+}
+.fa-github {
+  color: black;
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease-in-out;
+}
+
+.fa-github:hover {
+  transform: rotate(360deg) scale(1.2);
 }
