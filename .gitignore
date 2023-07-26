@@ -4,6 +4,7 @@ todo.txt
 
 /backend/node_modules
 /backend/.env
+/backend/fly.toml
 
 /frontend/node_modules
 /frontend/.env
