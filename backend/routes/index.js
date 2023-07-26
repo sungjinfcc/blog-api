@@ -26,11 +26,7 @@ router.delete(
 );
 
 // Comment
-router.get(
-  "/post/:post_id/comments",
-  authenticateToken,
-  comment_controller.get_comments
-);
+router.get("/post/:post_id/comments", comment_controller.get_comments);
 router.post(
   "/post/:post_id/comment/create",
   authenticateToken,
