@@ -52,7 +52,7 @@ const Login = () => {
 
       // Save the token and user info in local storage
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", data.user);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
       // Redirect to the authenticated home page
       window.location.href = "/home";
